@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="MyExcelMAUIApp.Tests/MyExcelMAUIApp.Tests.csproj" Id="d9e11ca0-bfa7-4169-9ebf-a60604d3e647" />
+  <Project Path="MyExcelMAUIApp/MyExcelMAUIApp.csproj" />
+</Solution>
