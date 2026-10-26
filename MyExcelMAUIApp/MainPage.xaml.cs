@@ -6,8 +6,8 @@ namespace MyExcelMAUIApp
 {
     public partial class MainPage : ContentPage
     {
-        const int CountColumn = 20; // columns count (A to Z) 
-        const int CountRow = 50;    // rows count
+        const int CountColumn = 20; 
+        const int CountRow = 50;    
 
         public MainPage()
         {
@@ -15,7 +15,7 @@ namespace MyExcelMAUIApp
             CreateGrid();
         }
 
-        // Create the table
+   
         private void CreateGrid()
         {
             AddColumnsAndColumnLabels();
@@ -97,17 +97,14 @@ namespace MyExcelMAUIApp
 
         private void CalculateButton_Clicked(object sender, EventArgs e)
         {
-            // Calculate logic will be here
         }
 
         private void SaveButton_Clicked(object sender, EventArgs e)
         {
-            // Save logic will be here
         }
 
         private void ReadButton_Clicked(object sender, EventArgs e)
         {
-            // Read logic will be here
         }
 
         private async void ExitButton_Clicked(object sender, EventArgs e)
