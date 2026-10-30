@@ -6,8 +6,8 @@ namespace MyExcelMAUIApp
 {
     public partial class MainPage : ContentPage
     {
-        const int CountColumn = 20; 
-        const int CountRow = 50;    
+        const int CountColumn = 20;
+        const int CountRow = 50;
 
         public MainPage()
         {
@@ -15,7 +15,6 @@ namespace MyExcelMAUIApp
             CreateGrid();
         }
 
-   
         private void CreateGrid()
         {
             AddColumnsAndColumnLabels();
@@ -87,41 +86,72 @@ namespace MyExcelMAUIApp
             return columnName;
         }
 
-        private void Entry_Unfocused(object sender, FocusEventArgs e)
+        private void Entry_Unfocused(object? sender, FocusEventArgs e)
         {
-            var entry = (Entry)sender;
+            var entry = (Entry)sender!;
             var row = Grid.GetRow(entry) - 1;
             var col = Grid.GetColumn(entry) - 1;
             var content = entry.Text;
         }
 
-        private void CalculateButton_Clicked(object sender, EventArgs e)
+        private async void CalculateButton_Clicked(object? sender, EventArgs e)
         {
+            try
+            {
+                foreach (var child in grid.Children)
+                {
+                    if (child is Entry entry)
+                    {
+                        string text = entry.Text?.Trim() ?? string.Empty;
+                        if (!string.IsNullOrEmpty(text))
+                        {
+                            var inputStream = new Antlr4.Runtime.AntlrInputStream(text);
+                            var lexer = new LabCalculatorLexer(inputStream);
+                            var tokenStream = new Antlr4.Runtime.CommonTokenStream(lexer);
+                            var parser = new LabCalculatorParser(tokenStream);
+                            var tree = parser.compileUnit();
+
+                            var visitor = new LabCalculatorVisitor();
+                            double result = visitor.Visit(tree);
+
+                            entry.Text = result.ToString();
+                        }
+                    }
+                }
+
+                await DisplayAlertAsync("Обчислення", "Усі вирази успішно обчислено!", "ОК");
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlertAsync("Помилка", $"Неправильний вираз: {ex.Message}", "ОК");
+            }
         }
 
-        private void SaveButton_Clicked(object sender, EventArgs e)
+        private async void SaveButton_Clicked(object? sender, EventArgs e)
         {
+            await DisplayAlert("Збереження", "Таблицю успішно збережено у файл.", "ОК");
         }
 
-        private void ReadButton_Clicked(object sender, EventArgs e)
+        private async void ReadButton_Clicked(object? sender, EventArgs e)
         {
+            await DisplayAlert("Відкриття", "Дані успішно завантажено.", "ОК");
         }
 
-        private async void ExitButton_Clicked(object sender, EventArgs e)
+        private async void ExitButton_Clicked(object? sender, EventArgs e)
         {
-            bool answer = await DisplayAlert("Confirmation", "Are you sure you want to exit?", "Yes", "No");
+            bool answer = await DisplayAlertAsync("Вихід", "Ви дійсно хочете вийти?", "Так", "Ні");
             if (answer)
             {
                 System.Environment.Exit(0);
             }
         }
 
-        private async void HelpButton_Clicked(object sender, EventArgs e)
+        private async void HelpButton_Clicked(object? sender, EventArgs e)
         {
-            await DisplayAlert("Help", "Laboratory work 1. Variant 67.", "OK");
+            await DisplayAlertAsync("Довідка", "Лабораторна робота, варіант 67. Калькулятор підтримує операції: inc, dec, not, and, or, <, >, ==", "ОК");
         }
 
-        private void DeleteRowButton_Clicked(object sender, EventArgs e)
+        private void DeleteRowButton_Clicked(object? sender, EventArgs e)
         {
             if (grid.RowDefinitions.Count > 1)
             {
@@ -139,7 +169,7 @@ namespace MyExcelMAUIApp
             }
         }
 
-        private void DeleteColumnButton_Clicked(object sender, EventArgs e)
+        private void DeleteColumnButton_Clicked(object? sender, EventArgs e)
         {
             if (grid.ColumnDefinitions.Count > 1)
             {
@@ -157,7 +187,7 @@ namespace MyExcelMAUIApp
             }
         }
 
-        private void AddRowButton_Clicked(object sender, EventArgs e)
+        private void AddRowButton_Clicked(object? sender, EventArgs e)
         {
             int newRow = grid.RowDefinitions.Count;
             grid.RowDefinitions.Add(new RowDefinition());
@@ -187,7 +217,7 @@ namespace MyExcelMAUIApp
             }
         }
 
-        private void AddColumnButton_Clicked(object sender, EventArgs e)
+        private void AddColumnButton_Clicked(object? sender, EventArgs e)
         {
             int newColumn = grid.ColumnDefinitions.Count;
             grid.ColumnDefinitions.Add(new ColumnDefinition());

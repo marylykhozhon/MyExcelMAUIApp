@@ -66,6 +66,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="LabCalculator.g4" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Antlr4 Include="LabCalculator.g4" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
+		<PackageReference Include="Antlr4BuildTasks" Version="12.14.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
 	</ItemGroup>
